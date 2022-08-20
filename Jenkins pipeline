@@ -6,7 +6,7 @@ pipeline{
     stages{
         stage('GIT CHECKOUT'){
             steps{
-                git credentialsId: 'git-cred', url: 'https://github.com/KCTechnologiesDevOps/KCMavenWebProject.git'
+                git credentialsId: 'git-cred', url: 'https://github.com/AdraAshok/pom.git'
             }
         }
         stage('BUILD'){
