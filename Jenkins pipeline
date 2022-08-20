@@ -1,0 +1,30 @@
+pipeline{
+    agent any
+    environment{
+        PATH = "/opt/maven/bin:$PATH"
+    }
+    stages{
+        stage('GIT CHECKOUT'){
+            steps{
+                git credentialsId: 'git-cred', url: 'https://github.com/KCTechnologiesDevOps/KCMavenWebProject.git'
+            }
+        }
+        stage('BUILD'){
+            steps{
+                sh 'mvn clean package'
+            }
+            
+        }
+        stage('Deploy'){
+            steps{
+                sshagent(['ssh-cred']) {
+                   sh 'ssh ubuntu@akki /opt/tomcat9/bin/shutdown.sh'
+                   sh 'scp -r **/*.war ubuntu@akki:/opt/tomcat9/webapps'
+                   sh 'ssh ubuntu@akki /opt/tomcat9/bin/startup.sh'
+                }
+}
+        }
+    }
+    
+        
+}
